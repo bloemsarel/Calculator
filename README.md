@@ -83,7 +83,7 @@ Simply visit the link above on any device - no installation needed!
 
 ### Clone Repository
 ```bash
-git clone https://github.com/yourusername/holliday-calculator.git
+git clone https://github.com/bloemsarel/holliday-calculator.git
 cd holliday-calculator
 ```
 
@@ -154,7 +154,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Developer:** Your Name
 **Email:** your.email@example.com
-**GitHub:** [@yourusername](https://github.com/yourusername)
+**GitHub:** [@yourusername](https://github.com/bloemsarel)
 
 ## 🙏 Acknowledgments
 
