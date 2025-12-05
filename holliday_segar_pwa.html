@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0f4c75">
+    <title>Holliday-Segar Calculator</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Public+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0f4c75;
+            --primary-dark: #0a3556;
+            --accent: #3282b8;
+            --success: #1b998b;
+            --error: #e63946;
+            --bg-main: #fafbfc;
+            --bg-card: #ffffff;
+            --text-primary: #1a1a2e;
+            --text-secondary: #4a5568;
+            --text-tertiary: #718096;
+            --border: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(15, 76, 117, 0.08);
+            --shadow-md: 0 4px 12px rgba(15, 76, 117, 0.12);
+            --shadow-lg: 0 10px 30px rgba(15, 76, 117, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Public Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf0 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 1rem;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: fadeIn 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .app-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+            font-weight: 400;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 1.75rem;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .formula-info {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            margin-bottom: 1.75rem;
+            border: none;
+            box-shadow: 0 4px 12px rgba(15, 76, 117, 0.25);
+        }
+
+        .formula-info strong {
+            display: block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            margin-bottom: 0.25rem;
+            opacity: 0.9;
+            font-weight: 600;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.01em;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            font-size: 1.125rem;
+            font-family: 'JetBrains Mono', monospace;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            background: var(--bg-main);
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(50, 130, 184, 0.1);
+        }
+
+        .input-field::placeholder {
+            color: var(--text-tertiary);
+            font-weight: 400;
+        }
+
+        .input-unit {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+            font-weight: 600;
+            pointer-events: none;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.875rem 1.5rem;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            font-family: 'Public Sans', sans-serif;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            font-size: 0.8125rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(15, 76, 117, 0.25);
+            grid-column: span 2;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(15, 76, 117, 0.35);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: var(--bg-main);
+            color: var(--text-secondary);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            border-color: var(--text-tertiary);
+            transform: translateY(-1px);
+        }
+
+        .results-card {
+            min-height: 180px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border: 2px dashed var(--border);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .results-card.has-content {
+            border: 2px solid var(--success);
+            background: linear-gradient(135deg, #f0fdf9 0%, #ffffff 100%);
+            animation: resultAppear 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes resultAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .results-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .result-item {
+            padding: 0.875rem;
+            background: white;
+            border-radius: 10px;
+            border-left: 4px solid var(--accent);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .result-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+
+        .result-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
+
+        .result-value .unit {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-left: 0.25rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: var(--text-tertiary);
+        }
+
+        .empty-state svg {
+            width: 64px;
+            height: 64px;
+            opacity: 0.3;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state p {
+            font-size: 0.875rem;
+        }
+
+        .error-message {
+            color: var(--error);
+            background: #fef2f2;
+            border: 2px solid var(--error);
+            padding: 1rem;
+            border-radius: 10px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 0.75rem;
+            }
+
+            .card {
+                padding: 1.25rem;
+            }
+
+            .app-title {
+                font-size: 1.25rem;
+            }
+
+            .result-value {
+                font-size: 1.25rem;
+            }
+        }
+
+        /* PWA Install Banner */
+        .install-banner {
+            position: fixed;
+            bottom: 1rem;
+            left: 1rem;
+            right: 1rem;
+            max-width: 500px;
+            margin: 0 auto;
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            display: none;
+            animation: slideUp 0.4s ease-out;
+            z-index: 1000;
+        }
+
+        .install-banner.visible {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .install-banner button {
+            background: white;
+            color: var(--primary);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .install-banner .close {
+            background: transparent;
+            color: white;
+            padding: 0.25rem 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="app-title">⚕️ Holliday-Segar</h1>
+            <p class="subtitle">IV Fluid Maintenance Calculator</p>
+        </header>
+
+        <div class="card">
+            <div class="formula-info">
+                <strong>FORMULA</strong>
+                Holliday-Segar (100/50/20 ml/kg)<br>
+                + Rehydration (20 ml/kg)
+            </div>
+
+            <div class="input-group">
+                <label class="input-label" for="weight">Patient Weight</label>
+                <div class="input-wrapper">
+                    <input 
+                        type="number" 
+                        id="weight" 
+                        class="input-field" 
+                        placeholder="Enter weight"
+                        step="0.1"
+                        min="0"
+                        autocomplete="off"
+                    >
+                    <span class="input-unit">kg</span>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="calculateVolume()">
+                    Calculate Volume
+                </button>
+                <button class="btn btn-secondary" onclick="resetFields()">
+                    Reset
+                </button>
+            </div>
+        </div>
+
+        <div class="card results-card" id="resultsCard">
+            <div id="resultsContent">
+                <div class="empty-state">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                    </svg>
+                    <p>Enter patient weight to calculate fluid requirements</p>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            Medical Calculator • Version 1.0<br>
+            Always verify calculations clinically
+        </footer>
+    </div>
+
+    <div class="install-banner" id="installBanner">
+        <div style="flex: 1;">
+            <strong>Install App</strong><br>
+            <small>Add to home screen for quick access</small>
+        </div>
+        <button onclick="installApp()">Install</button>
+        <button class="close" onclick="closeInstallBanner()">✕</button>
+    </div>
+
+    <script>
+        // Holliday-Segar calculation
+        function hollidaySegar(weightKg) {
+            if (weightKg <= 0) {
+                throw new Error('Weight must be greater than zero');
+            }
+
+            let dailyMl;
+            if (weightKg <= 10) {
+                dailyMl = weightKg * 100;
+            } else if (weightKg <= 20) {
+                dailyMl = (10 * 100) + (weightKg - 10) * 50;
+            } else {
+                dailyMl = (10 * 100) + (10 * 50) + (weightKg - 20) * 20;
+            }
+
+            const hourlyMl = dailyMl / 24;
+
+            return {
+                weight: weightKg,
+                daily: Math.round(dailyMl * 10) / 10,
+                hourly: Math.round(hourlyMl * 100) / 100
+            };
+        }
+
+        function calculateVolume() {
+            const weightInput = document.getElementById('weight');
+            const resultsCard = document.getElementById('resultsCard');
+            const resultsContent = document.getElementById('resultsContent');
+
+            try {
+                const weight = parseFloat(weightInput.value);
+                
+                if (isNaN(weight) || weight <= 0) {
+                    throw new Error('Please enter a valid weight');
+                }
+
+                const result = hollidaySegar(weight);
+                const rehydration = Math.round(weight * 20 * 10) / 10;
+
+                resultsCard.classList.add('has-content');
+                resultsContent.innerHTML = `
+                    <div class="results-grid">
+                        <div class="result-item">
+                            <div class="result-label">Patient Weight</div>
+                            <div class="result-value">${result.weight}<span class="unit">kg</span></div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Daily Requirement</div>
+                            <div class="result-value">${result.daily}<span class="unit">mL/day</span></div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Hourly Rate</div>
+                            <div class="result-value">${result.hourly}<span class="unit">mL/hr</span></div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Rehydration (20 ml/kg)</div>
+                            <div class="result-value">${rehydration}<span class="unit">mL</span></div>
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                resultsCard.classList.remove('has-content');
+                resultsContent.innerHTML = `
+                    <div class="error-message">
+                        ❌ ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        function resetFields() {
+            document.getElementById('weight').value = '';
+            const resultsCard = document.getElementById('resultsCard');
+            const resultsContent = document.getElementById('resultsContent');
+            
+            resultsCard.classList.remove('has-content');
+            resultsContent.innerHTML = `
+                <div class="empty-state">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                    </svg>
+                    <p>Enter patient weight to calculate fluid requirements</p>
+                </div>
+            `;
+            document.getElementById('weight').focus();
+        }
+
+        // Enter key support
+        document.getElementById('weight').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calculateVolume();
+            }
+        });
+
+        // PWA Installation
+        let deferredPrompt;
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installBanner').classList.add('visible');
+        });
+
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    deferredPrompt = null;
+                    closeInstallBanner();
+                });
+            }
+        }
+
+        function closeInstallBanner() {
+            document.getElementById('installBanner').classList.remove('visible');
+        }
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(() => {
+                // Service worker optional
+            });
+        }
+
+        // Focus input on load
+        window.addEventListener('load', () => {
+            document.getElementById('weight').focus();
+        });
+    </script>
+</body>
+</html>
