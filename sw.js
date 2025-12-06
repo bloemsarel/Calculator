@@ -1,8 +1,8 @@
 const CACHE_NAME = 'holliday-segar-v1';
 const urlsToCache = [
-  '.',
-  'holliday_segar_pwa.html',
-  'manifest.json'
+  './',
+  './index.html',
+  './manifest.json'
 ];
 
 // Install service worker

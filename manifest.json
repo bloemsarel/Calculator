@@ -2,22 +2,22 @@
   "name": "Holliday-Segar Calculator",
   "short_name": "H-S Calc",
   "description": "IV Fluid Maintenance Calculator using Holliday-Segar method",
-  "start_url": ".",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#0f4c75",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect fill='%230f4c75' width='192' height='192'/%3E%3Ctext x='96' y='120' font-size='80' text-anchor='middle' fill='white'%3E⚕️%3C/text%3E%3C/svg%3E",
       "sizes": "192x192",
-      "type": "image/png",
+      "type": "image/svg+xml",
       "purpose": "any maskable"
     },
     {
-      "src": "icon-512.png",
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect fill='%230f4c75' width='512' height='512'/%3E%3Ctext x='256' y='320' font-size='200' text-anchor='middle' fill='white'%3E⚕️%3C/text%3E%3C/svg%3E",
       "sizes": "512x512",
-      "type": "image/png",
+      "type": "image/svg+xml",
       "purpose": "any maskable"
     }
   ],

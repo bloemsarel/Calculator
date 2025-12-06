@@ -6,9 +6,7 @@ A professional web-based medical calculator for determining pediatric IV fluid m
 
 ## 🌐 Live Demo
 
-**[Launch Calculator →](https://yourusername.github.io/holliday-calculator/holliday_calculator_standalone.html)**
-
-> Replace `yourusername` with your actual GitHub username after deployment
+**[Launch Calculator →](https://bloemsarel.github.io/Calculator/)**
 
 ## 📱 Features
 
@@ -79,41 +77,49 @@ Simply visit the link above on any device - no installation needed!
 - **PWA:** Progressive Web App capabilities
 - **Offline:** Service Worker caching
 
+## 📦 GitHub Pages Deployment
+
+Your calculator is configured to work with GitHub Pages. To enable it:
+
+1. **Go to your repository settings:**
+   - Visit: `https://github.com/bloemsarel/Calculator/settings/pages`
+
+2. **Configure GitHub Pages:**
+   - Under "Build and deployment"
+   - Set **Source** to: `Deploy from a branch`
+   - Set **Branch** to: `main` (or `master`)
+   - Set **Folder** to: `/ (root)`
+   - Click **Save**
+
+3. **Wait 1-2 minutes** for GitHub to build your site
+
+4. **Your calculator will be live at:**
+   `https://bloemsarel.github.io/Calculator/`
+
+### Files Required in Your Repository
+
+Make sure these files are in the root of your repository:
+- ✅ `index.html` (main calculator file)
+- ✅ `manifest.json` (PWA configuration)
+- ✅ `sw.js` (service worker for offline support)
+- ✅ `README.md` (this file)
+
 ## 🛠️ Local Development
 
 ### Clone Repository
 ```bash
-git clone https://github.com/bloemsarel/holliday-calculator.git
-cd holliday-calculator
+git clone https://github.com/bloemsarel/Calculator.git
+cd Calculator
 ```
 
 ### Run Locally
-Simply open `holliday_calculator_standalone.html` in your browser. No build process needed!
+Simply open `index.html` in your browser. No build process needed!
 
 ### Customize
 Edit the HTML file to modify:
 - Colors (search for CSS variables)
 - Formula calculations
 - UI layout
-
-## 📦 Deployment
-
-### GitHub Pages (Free)
-
-1. **Fork/Upload this repository**
-2. **Go to Settings → Pages**
-3. **Select Source:** Deploy from branch
-4. **Select Branch:** main
-5. **Select Folder:** / (root)
-6. **Click Save**
-7. **Your site will be live at:** `https://yourusername.github.io/holliday-calculator/`
-
-### Alternative Hosting
-
-- **Netlify:** Drag and drop the HTML file
-- **Vercel:** Connect your GitHub repo
-- **Firebase:** Deploy with Firebase CLI
-- **Any Web Server:** Upload the HTML file
 
 ## 📱 Browser Support
 
@@ -138,64 +144,17 @@ This calculator is for educational and reference purposes only. Always verify ca
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request. For major changes:
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 📞 Contact
-
-**Developer:** Your Name
-**Email:** your.email@example.com
-**GitHub:** [@yourusername](https://github.com/bloemsarel)
-
-## 🙏 Acknowledgments
-
-- Formula based on Holliday & Segar's 1957 pediatric fluid requirements publication
-- UI design inspired by modern medical applications
-- Built with accessibility and mobile-first principles
-
-## 📊 Version History
-
-- **v1.0** (Dec 2025) - Initial release
-  - Core calculator functionality
-  - Mobile-responsive design
-  - PWA support
-  - Offline capability
-
-## 🔮 Roadmap
-
-- [ ] Additional fluid formulas (4-2-1 rule)
-- [ ] Weight unit conversion (kg ↔ lbs)
-- [ ] Result history/logging
-- [ ] Print-friendly output
-- [ ] Multi-language support
-- [ ] Dark mode toggle
-
-## 💡 Tips for Clinical Use
-
-1. **Bookmark for Quick Access** - Add to favorites in your browser
-2. **Install as App** - Faster than opening browser each time
-3. **Works Offline** - Perfect for areas with poor connectivity
-4. **Share the Link** - Help colleagues access the tool
-5. **Verify Results** - Always double-check calculations clinically
+This project is licensed under the MIT License.
 
 ## 📚 References
 
 - Holliday MA, Segar WE. *The maintenance need for water in parenteral fluid therapy.* Pediatrics. 1957;19(5):823-832.
 - NICE Clinical Guidelines - Intravenous fluid therapy in children
 - WHO Guidelines on fluid management in children
-
-## 🐛 Known Issues
-
-None currently reported. Please open an issue if you find any bugs!
 
 ---
 
